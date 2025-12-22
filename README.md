@@ -59,33 +59,45 @@ app/                    # Expo Router - Routes
 lib/                    # Logique métier
 ├── api/
 │   └── TodoRepository.ts      # Couche d'accès aux données (fetch direct)
-├── components/                # Composants UI réutilisables
-│   ├── AuthGuard.tsx         # Protection des routes
-│   ├── TodoItem.tsx          # Item de la liste
-│   ├── SearchBar.tsx         # Barre de recherche
-│   ├── TodoFilters.tsx       # Filtres (All/Active/Completed)
-│   ├── EmptyState.tsx        # États vides
-│   ├── LoadingSpinner.tsx    # Indicateur de chargement
-│   └── ErrorMessage.tsx      # Affichage des erreurs
+├── components/                # Composants React
+│   ├── ui/                    # Composants UI purs (design system)
+│   │   ├── AppHeader.tsx      # Header avec info user + logout
+│   │   ├── Avatar.tsx         # Avatar emoji avec variantes de taille
+│   │   ├── Button.tsx         # Bouton Primary/Secondary
+│   │   ├── CharacterCount.tsx # Compteur de caractères
+│   │   ├── ErrorBanner.tsx    # Bannière d'erreur inline
+│   │   ├── FAB.tsx            # Floating Action Button
+│   │   ├── Input.tsx          # Input texte avec label/erreur
+│   │   ├── PageHeader.tsx     # Header de page titre/sous-titre
+│   │   └── UserCard.tsx       # Carte de sélection utilisateur
+│   ├── AuthGuard.tsx          # Protection des routes (logique)
+│   ├── EmptyState.tsx         # Affichage état vide (logique)
+│   ├── ErrorMessage.tsx       # Message erreur + retry (logique)
+│   ├── LoadingSpinner.tsx     # Indicateur de chargement
+│   ├── SearchBar.tsx          # Barre de recherche
+│   ├── TodoFilters.tsx        # Filtres (All/Active/Completed)
+│   └── TodoItem.tsx           # Item de la liste de todos
 ├── hooks/
-│   ├── useDebounce.ts        # Hook de debouncing (performance)
-│   └── useTodos.ts           # Wrapper autour du store Zustand
+│   ├── useDebounce.ts         # Hook de debouncing (performance)
+│   └── useTodos.ts            # Wrapper autour du store Zustand
 ├── providers/
-│   └── TodoDataProvider.tsx  # Gestion centralisée du cycle de vie des données
+│   └── TodoDataProvider.tsx   # Gestion centralisée du cycle de vie des données
 ├── screens/                   # Écrans de l'application
-│   ├── LoginScreen.tsx       # Sélection de l'utilisateur
-│   ├── TodoListScreen.tsx    # Liste principale
-│   └── TodoFormScreen.tsx    # Formulaire d'édition
+│   ├── LoginScreen.tsx        # Sélection de l'utilisateur
+│   ├── TodoFormScreen.tsx     # Formulaire d'édition
+│   └── TodoListScreen.tsx     # Liste principale
 ├── stores/                    # Zustand stores
-│   ├── useAuthStore.ts       # État d'authentification
-│   └── useTodoStore.ts       # État des todos (CRUD + filtres)
+│   ├── useAuthStore.ts        # État d'authentification
+│   └── useTodoStore.ts        # État des todos (CRUD + filtres)
+├── theme/                     # Design system
+│   └── colors.ts              # Palette de couleurs centralisée
 ├── types/                     # Types TypeScript
-│   ├── Todo.ts               # Entity du domaine
-│   ├── TodoDTO.ts            # Types API + mappers
-│   └── User.ts               # Type User
+│   ├── Todo.ts                # Entity du domaine
+│   ├── TodoDTO.ts             # Types API + mappers
+│   └── User.ts                # Type User
 └── utils/
-    ├── config.ts             # Configuration (API URL, users mock)
-    └── validation.ts         # Validation des inputs
+    ├── config.ts              # Configuration (API URL, users mock)
+    └── validation.ts          # Validation des inputs
 ```
 
 ## 🎯 Décisions d'Architecture
@@ -168,6 +180,44 @@ lib/                    # Logique métier
 - `null` = "opération réussie, mais pas de données" (intentionnel)
 - `undefined` = "non initialisé" ou "optionnel" (accidentel)
 - Convention industry standard pour les APIs
+
+### 9. Séparation Composants UI / Logique
+
+**Décision :** Séparer les composants UI purs dans `lib/components/ui/` des composants avec logique.
+
+**Composants UI Purs (`lib/components/ui/`):**
+- Aucune logique métier, pas de hooks (sauf useState pour l'UI interne)
+- Reçoivent toutes les données via props
+- Foundation pour un design system
+- **Exemples :** Button, FAB, Input, Avatar, AppHeader, PageHeader, UserCard, ErrorBanner, CharacterCount
+
+**Composants avec Logique (`lib/components/`):**
+- Utilisent des hooks (useTodos, useAuthStore, etc.)
+- Gèrent le fetching de données, la gestion d'état
+- **Exemples :** AuthGuard, TodoItem, TodoFilters, SearchBar, EmptyState, ErrorMessage
+
+**Justification :**
+- Plus facile à tester (composants UI purs)
+- Réutilisables dans différents contextes
+- Séparation claire des responsabilités
+- Base pour Storybook/design system
+
+### 10. Palette de Couleurs Centralisée
+
+**Décision :** Toutes les couleurs définies dans `lib/theme/colors.ts`.
+
+**Justification :**
+- Source unique de vérité pour les couleurs
+- Facilite le changement de thème
+- Type-safe avec `as const`
+- Foundation pour le dark mode
+
+**Trade-off :**
+- **Avantage :** Cohérence, maintenabilité, évolutivité
+- **Avantage :** Autocomplétion TypeScript
+- **Avantage :** Changement de couleur = 1 ligne modifiée
+
+**Justification :** Pour un design system évolutif, la palette centralisée est indispensable.
 
 ## ⚖️ Trade-offs et Compromis
 

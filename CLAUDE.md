@@ -47,16 +47,38 @@ app/                    # Expo Router (file-based routing)
 lib/                    # Business logic (simplified clean architecture)
 ├── api/               # Data layer
 │   └── TodoRepository.ts   # Direct fetch calls to DummyJSON
-├── components/        # Reusable UI components
+├── components/        # React components
+│   ├── ui/            # Pure UI components (design system foundation)
+│   │   ├── AppHeader.tsx      # App header with user info + logout
+│   │   ├── Avatar.tsx         # Emoji avatar with size variants
+│   │   ├── Button.tsx         # Primary/Secondary button
+│   │   ├── CharacterCount.tsx # Character counter
+│   │   ├── ErrorBanner.tsx    # Inline error banner
+│   │   ├── FAB.tsx            # Floating Action Button
+│   │   ├── Input.tsx          # Text input with label/error
+│   │   ├── PageHeader.tsx     # Page header with title/subtitle
+│   │   └── UserCard.tsx       # User selection card
+│   ├── AuthGuard.tsx      # Route protection (logic)
+│   ├── EmptyState.tsx     # Empty state display (logic)
+│   ├── ErrorMessage.tsx   # Error message with retry (logic)
+│   ├── LoadingSpinner.tsx # Loading indicator
+│   ├── SearchBar.tsx      # Search input
+│   ├── TodoFilters.tsx    # Filter tabs (All/Active/Completed)
+│   └── TodoItem.tsx       # Todo list item
 ├── hooks/             # Custom React hooks
 │   ├── useDebounce.ts     # Search performance optimization
 │   └── useTodos.ts        # Wrapper around Zustand store (demonstrates reusability)
 ├── providers/
 │   └── TodoDataProvider.tsx  # Centralized data fetching/clearing
 ├── screens/           # Screen components
+│   ├── LoginScreen.tsx    # User selection screen
+│   ├── TodoFormScreen.tsx # Add/Edit todo form
+│   └── TodoListScreen.tsx # Main todo list
 ├── stores/            # Zustand state management
 │   ├── useAuthStore.ts    # Auth state (user, login, logout)
 │   └── useTodoStore.ts    # Todo state (CRUD + filtering + search)
+├── theme/             # Design system
+│   └── colors.ts          # Centralized color palette
 ├── types/             # TypeScript types
 │   ├── Todo.ts           # Domain entity
 │   ├── TodoDTO.ts        # API types + DTO mappers
@@ -113,6 +135,75 @@ Centralized authentication logic in `lib/components/AuthGuard.tsx`:
 - `requireAuth={true}` - Redirects to login if not authenticated
 - `requireAuth={false}` - Redirects to todos if already authenticated
 - Prevents duplicate auth checks in route files
+
+#### 6. **UI Component Library Pattern**
+Separation between pure UI components and components with logic:
+
+**Pure UI Components** (`lib/components/ui/`):
+- No business logic, no hooks (except useState for internal UI state)
+- Receive all data via props
+- Foundation for design system
+- Examples: Button, FAB, Input, Avatar, AppHeader, PageHeader, UserCard, ErrorBanner, CharacterCount
+
+**Components with Logic** (`lib/components/`):
+- Use hooks (useTodos, useAuthStore, etc.)
+- Handle data fetching, state management
+- Examples: AuthGuard, TodoItem, TodoFilters, SearchBar, EmptyState, ErrorMessage
+
+**Benefits:**
+- Easier to test pure UI components
+- Reusable across different contexts
+- Clear separation of concerns
+- Foundation for Storybook/design system
+
+#### 7. **Centralized Color Palette**
+All colors defined in `lib/theme/colors.ts`:
+
+```typescript
+export const colors = {
+  brand: {
+    primary: '#3B82F6',       // Main blue
+    primaryDark: '#2563EB',   // Darker blue
+    primaryLight: '#DBEAFE',  // Light blue
+    primaryPale: '#93C5FD',   // Pale blue (disabled)
+  },
+  neutral: {
+    white: '#FFFFFF',
+    black: '#111827',
+    gray50: '#F9FAFB',  // Backgrounds
+    gray100: '#E5E7EB', // Borders
+    gray200: '#D1D5DB', // Input borders
+    gray400: '#9CA3AF', // Placeholders
+    gray500: '#6B7280', // Secondary text
+    gray600: '#374151', // Primary text
+  },
+  error: {
+    main: '#EF4444',
+    dark: '#B91C1C',
+    light: '#FEF2F2',
+    border: '#FECACA',
+  },
+  shadow: '#000',
+}
+```
+
+**Usage:**
+```typescript
+import { colors } from '@/lib/theme/colors';
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: colors.brand.primary,
+    color: colors.neutral.white,
+  },
+});
+```
+
+**Benefits:**
+- Single source of truth for colors
+- Easy to update theme
+- Type-safe with `as const`
+- Foundation for dark mode support
 
 ### State Management (Zustand)
 
@@ -181,7 +272,8 @@ No real auth server. User selection screen (`LoginScreen`) allows choosing from 
 ### Styling
 - Use React Native `StyleSheet.create()` (manual styling, no NativeWind)
 - Keep styles at bottom of component files
-- Use color values directly (no theme system for this project)
+- **Always import colors from `@/lib/theme/colors`** - Never hardcode color values
+- All UI components use centralized color palette
 
 ### Debouncing
 Search input uses `useDebounce` hook (300ms delay) to prevent excessive re-filtering on every keystroke.
@@ -206,9 +298,15 @@ User Action → Component → useTodos Hook → useTodoStore → TodoRepository 
 - `lib/hooks/useTodos.ts` - Store wrapper with computed values
 - `lib/api/TodoRepository.ts` - API integration
 
+**Design System:**
+- `lib/theme/colors.ts` - Centralized color palette (brand, neutral, error, semantic)
+- `lib/components/ui/` - Pure UI components library (9 components)
+
 **Key Components:**
 - `lib/components/AuthGuard.tsx` - Route protection
 - `lib/screens/TodoListScreen.tsx` - Main UI
+- `lib/components/ui/FAB.tsx` - Floating Action Button
+- `lib/components/ui/Button.tsx` - Primary/Secondary button variants
 
 **Types:**
 - `lib/types/Todo.ts` - Domain entity + helper functions
@@ -216,12 +314,19 @@ User Action → Component → useTodos Hook → useTodoStore → TodoRepository 
 
 ## Common Patterns
 
+### Adding a New UI Component
+1. Create component in `lib/components/ui/` for pure UI
+2. Use centralized colors: `import { colors } from '@/lib/theme/colors'`
+3. Accept all data via props (no hooks for pure UI)
+4. Export from component file (no index.ts files)
+
 ### Adding a New Feature
 1. Add types to `lib/types/` if needed
 2. Add API method to `TodoRepository` if needed
 3. Add action to appropriate Zustand store
-4. Update screen/component to use new action
-5. Use optimistic updates for mutations
+4. Create/update UI components in `lib/components/ui/` if needed
+5. Update screen/component to use new action
+6. Use optimistic updates for mutations
 
 ### Modifying API Structure
 1. Update `TodoDTO` types in `lib/types/TodoDTO.ts`

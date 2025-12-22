@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Todo, isTempTodo } from '@/lib/types/Todo';
+import { colors } from '@/lib/theme/colors';
 
 interface TodoItemProps {
   todo: Todo;
@@ -84,9 +85,9 @@ export const TodoItem = memo(function TodoItem({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.neutral.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: colors.neutral.gray100,
     paddingHorizontal: 16,
     paddingVertical: 16,
   },
@@ -104,14 +105,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#3B82F6',
-    borderColor: '#3B82F6',
+    backgroundColor: colors.brand.primary,
+    borderColor: colors.brand.primary,
   },
   checkboxUnchecked: {
-    borderColor: '#D1D5DB',
+    borderColor: colors.neutral.gray200,
   },
   checkmark: {
-    color: '#FFFFFF',
+    color: colors.neutral.white,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -120,18 +121,18 @@ const styles = StyleSheet.create({
   },
   todoText: {
     fontSize: 16,
-    color: '#111827',
+    color: colors.neutral.black,
   },
   todoTextCompleted: {
     textDecorationLine: 'line-through',
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
   },
   todoTextTemp: {
     opacity: 0.6,
   },
   savingText: {
     fontSize: 12,
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
     marginTop: 4,
   },
   actions: {

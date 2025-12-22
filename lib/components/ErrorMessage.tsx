@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { colors } from '@/lib/theme/colors';
 
 interface ErrorMessageProps {
   message: string;
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   errorBox: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: colors.error.light,
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
@@ -47,25 +48,25 @@ const styles = StyleSheet.create({
     maxWidth: 400,
   },
   errorTitle: {
-    color: '#991B1B',
+    color: colors.error.dark,
     textAlign: 'center',
     fontWeight: '500',
     marginBottom: 4,
     fontSize: 16,
   },
   errorMessage: {
-    color: '#B91C1C',
+    color: colors.error.dark,
     textAlign: 'center',
     fontSize: 14,
   },
   retryButton: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: colors.brand.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   retryButtonText: {
-    color: '#FFFFFF',
+    color: colors.neutral.white,
     fontWeight: '600',
     fontSize: 16,
   },

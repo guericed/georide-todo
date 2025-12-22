@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { colors } from '@/lib/theme/colors';
 
 interface EmptyStateProps {
   title: string;
@@ -34,12 +35,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1F2937',
+    color: colors.neutral.black,
     marginBottom: 8,
     textAlign: 'center',
   },
   message: {
-    color: '#6B7280',
+    color: colors.neutral.gray500,
     textAlign: 'center',
     fontSize: 14,
   },

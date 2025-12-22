@@ -12,6 +12,7 @@ import { EmptyState } from '@/lib/components/EmptyState';
 import { AppHeader } from '@/lib/components/ui/AppHeader';
 import { ErrorBanner } from '@/lib/components/ui/ErrorBanner';
 import { FAB } from '@/lib/components/ui/FAB';
+import { colors } from '@/lib/theme/colors';
 
 /**
  * Main todo list screen component
@@ -169,7 +170,7 @@ export function TodoListScreen() {
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            tintColor="#3B82F6"
+            tintColor={colors.brand.primary}
           />
         }
         contentContainerStyle={
@@ -188,7 +189,7 @@ export function TodoListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.neutral.gray50,
   },
   listContent: {
     paddingBottom: 80,

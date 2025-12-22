@@ -4,6 +4,7 @@ import { useAuthStore } from '@/lib/stores/useAuthStore';
 import { MOCK_USERS } from '@/lib/utils/config';
 import { PageHeader } from '@/lib/components/ui/PageHeader';
 import { UserCard } from '@/lib/components/ui/UserCard';
+import { colors } from '@/lib/theme/colors';
 
 /**
  * Login screen component
@@ -58,7 +59,7 @@ export function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.neutral.gray50,
   },
   content: {
     flex: 1,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     paddingTop: 24,
   },
   sectionTitle: {
-    color: '#374151',
+    color: colors.neutral.gray600,
     fontWeight: '600',
     marginBottom: 16,
     fontSize: 16,
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   footerText: {
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
     fontSize: 12,
     textAlign: 'center',
   },

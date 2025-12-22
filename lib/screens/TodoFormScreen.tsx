@@ -6,6 +6,7 @@ import { validateTodoText } from '@/lib/utils/validation';
 import { Input } from '@/lib/components/ui/Input';
 import { Button } from '@/lib/components/ui/Button';
 import { CharacterCount } from '@/lib/components/ui/CharacterCount';
+import { colors } from '@/lib/theme/colors';
 
 interface TodoFormScreenProps {
   mode?: 'add' | 'edit';
@@ -120,7 +121,7 @@ export function TodoFormScreen({ mode = 'add' }: TodoFormScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.neutral.white,
   },
   content: {
     flex: 1,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#111827',
+    color: colors.neutral.black,
     marginBottom: 24,
   },
   actions: {

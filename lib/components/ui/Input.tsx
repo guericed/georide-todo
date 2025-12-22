@@ -12,7 +12,7 @@ export function Input({ label, error, ...props }: InputProps) {
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
         style={[styles.input, { textAlignVertical: 'top' }]}
-        placeholderTextColor="#9CA3AF"
+        placeholderTextColor={colors.neutral.gray400}
         {...props}
       />
       {error && <Text style={styles.error}>{error}</Text>}

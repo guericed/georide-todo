@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { TodoFilter } from "@/lib/types/Todo";
+import { colors } from '@/lib/theme/colors';
 
 interface TodoFiltersProps {
   currentFilter: TodoFilter;
@@ -64,9 +65,9 @@ export function TodoFilters({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.neutral.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: colors.neutral.gray100,
   },
   tab: {
     flex: 1,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   tabActive: {
-    borderBottomColor: '#3B82F6',
+    borderBottomColor: colors.brand.primary,
   },
   tabInactive: {
     borderBottomColor: 'transparent',
@@ -85,10 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   tabLabelActive: {
-    color: '#3B82F6',
+    color: colors.brand.primary,
   },
   tabLabelInactive: {
-    color: '#6B7280',
+    color: colors.neutral.gray500,
   },
   tabCount: {
     textAlign: 'center',
@@ -96,9 +97,9 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   tabCountActive: {
-    color: '#60A5FA',
+    color: colors.brand.primaryPale,
   },
   tabCountInactive: {
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
   },
 });

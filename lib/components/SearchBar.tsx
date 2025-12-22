@@ -1,4 +1,5 @@
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { colors } from '@/lib/theme/colors';
 
 interface SearchBarProps {
   value: string;
@@ -27,7 +28,7 @@ export function SearchBar({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor={colors.neutral.gray400}
           style={styles.input}
           accessibilityLabel="Search todos"
           accessibilityHint="Type to filter todos by text"
@@ -51,26 +52,26 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.neutral.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    borderBottomColor: colors.neutral.gray100,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F4F6',
+    backgroundColor: colors.neutral.gray50,
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
   icon: {
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
     marginRight: 8,
     fontSize: 18,
   },
   input: {
     flex: 1,
-    color: '#111827',
+    color: colors.neutral.black,
     fontSize: 16,
   },
   clearButton: {
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   clearIcon: {
-    color: '#9CA3AF',
+    color: colors.neutral.gray400,
     fontSize: 18,
   },
 });

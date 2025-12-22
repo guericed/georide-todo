@@ -88,8 +88,10 @@ export const useTodoStore = create<TodoState>((set, get) => ({
         todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
       }));
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to update todo';
-      set({ todos: originalTodos, error: message });
+      // WARNING !!!
+      // We silently catch the error since the API is actually not handling update on new todo.
+      //const message = error instanceof Error ? error.message : 'Failed to update todo';
+      //set({ todos: originalTodos, error: message });
     }
   },
 
@@ -109,8 +111,10 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     try {
       await todoRepository.deleteTodo(id);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to delete todo';
-      set({ todos: originalTodos, error: message });
+      // WARNING !!!
+      // We silently catch the error since the API is actually not handling delete on new todo.
+      //const message = error instanceof Error ? error.message : 'Failed to delete todo';
+      //set({ todos: originalTodos, error: message });
     }
   },
 
@@ -138,8 +142,10 @@ export const useTodoStore = create<TodoState>((set, get) => ({
         todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
       }));
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to toggle todo';
-      set({ todos: originalTodos, error: message });
+      // WARNING !!!
+      // We silently catch the error since the API is actually not handling toggle on new todo.
+      //const message = error instanceof Error ? error.message : 'Failed to toggle todo';
+      //set({ todos: originalTodos, error: message });
     }
   },
 

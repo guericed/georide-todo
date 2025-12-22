@@ -9,14 +9,14 @@ interface TodoState {
   searchQuery: string;
   isLoading: boolean;
   error: string | null;
-  fetchTodos: (userId: number) => Promise<void>;
-  addTodo: (text: string, userId: number) => Promise<void>;
-  updateTodo: (id: number, text: string) => Promise<void>;
+  fetchTodos: (userId: number) => Promise<Todo[]>;
+  addTodo: (text: string, userId: number) => Promise<Todo | null>;
+  updateTodo: (id: number, text: string) => Promise<Todo | null>;
   deleteTodo: (id: number) => Promise<void>;
-  toggleTodo: (id: number) => Promise<void>;
+  toggleTodo: (id: number) => Promise<Todo | null>;
   setFilter: (filter: TodoFilter) => void;
   setSearchQuery: (query: string) => void;
-  refresh: (userId: number) => Promise<void>;
+  refresh: (userId: number) => Promise<Todo[]>;
   clearError: () => void;
   clearTodos: () => void;
 }
@@ -33,9 +33,11 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     try {
       const todos = await todoRepository.getTodos(userId);
       set({ todos, isLoading: false });
+      return todos;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to fetch todos';
       set({ error: message, isLoading: false });
+      return [];
     }
   },
 
@@ -43,7 +45,7 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     const validation = validateTodoText(text);
     if (!validation.isValid) {
       set({ error: validation.error });
-      return;
+      return null;
     }
 
     const sanitizedText = sanitizeTodoText(text);
@@ -59,12 +61,14 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       set((state) => ({
         todos: state.todos.map((t) => (t.id === tempTodo.id ? newTodo : t)),
       }));
+      return newTodo;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to add todo';
       set((state) => ({
         todos: state.todos.filter((t) => t.id !== tempTodo.id),
         error: message,
       }));
+      return null;
     }
   },
 
@@ -72,11 +76,10 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     const validation = validateTodoText(text);
     if (!validation.isValid) {
       set({ error: validation.error });
-      return;
+      return null;
     }
 
     const sanitizedText = sanitizeTodoText(text);
-    const originalTodos = get().todos;
 
     set((state) => ({
       todos: state.todos.map((t) => (t.id === id ? { ...t, text: sanitizedText } : t)),
@@ -88,17 +91,18 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       set((state) => ({
         todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
       }));
+      return updatedTodo;
     } catch (error) {
       // WARNING !!!
       // We silently catch the error since the API is actually not handling update on new todo.
       //const message = error instanceof Error ? error.message : 'Failed to update todo';
       //set({ todos: originalTodos, error: message });
+      return null;
     }
   },
 
   deleteTodo: async (id: number) => {
-    const originalTodos = get().todos;
-    const todo = originalTodos.find((t) => t.id === id);
+    const todo = get().todos.find((t) => t.id === id);
 
     set((state) => ({
       todos: state.todos.filter((t) => t.id !== id),
@@ -114,15 +118,12 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     } catch (error) {
       // WARNING !!!
       // We silently catch the error since the API is actually not handling delete on new todo.
-      //const message = error instanceof Error ? error.message : 'Failed to delete todo';
-      //set({ todos: originalTodos, error: message });
     }
   },
 
   toggleTodo: async (id: number) => {
-    const originalTodos = get().todos;
-    const todo = originalTodos.find((t) => t.id === id);
-    if (!todo) return;
+    const todo = get().todos.find((t) => t.id === id);
+    if (!todo) return null;
 
     const newCompleted = !todo.isCompleted;
 
@@ -134,7 +135,7 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     }));
 
     if (isTempTodo(todo)) {
-      return;
+      return todo;
     }
 
     try {
@@ -142,11 +143,13 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       set((state) => ({
         todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
       }));
+      return updatedTodo;
     } catch (error) {
       // WARNING !!!
       // We silently catch the error since the API is actually not handling toggle on new todo.
       //const message = error instanceof Error ? error.message : 'Failed to toggle todo';
       //set({ todos: originalTodos, error: message });
+      return null;
     }
   },
 

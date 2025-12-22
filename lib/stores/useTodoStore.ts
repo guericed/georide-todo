@@ -88,9 +88,6 @@ export const useTodoStore = create<TodoState>((set, get) => ({
 
     try {
       const updatedTodo = await todoRepository.updateTodo(id, sanitizedText);
-      set((state) => ({
-        todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
-      }));
       return updatedTodo;
     } catch (error) {
       // WARNING !!!
@@ -140,9 +137,6 @@ export const useTodoStore = create<TodoState>((set, get) => ({
 
     try {
       const updatedTodo = await todoRepository.toggleTodo(id, newCompleted);
-      set((state) => ({
-        todos: state.todos.map((t) => (t.id === id ? updatedTodo : t)),
-      }));
       return updatedTodo;
     } catch (error) {
       // WARNING !!!

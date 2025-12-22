@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTodos } from '@/lib/hooks/useTodos';
@@ -37,10 +37,6 @@ export function TodoListScreen() {
   } = useTodos();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

@@ -18,6 +18,7 @@ interface TodoState {
   setSearchQuery: (query: string) => void;
   refresh: (userId: number) => Promise<void>;
   clearError: () => void;
+  clearTodos: () => void;
 }
 
 export const useTodoStore = create<TodoState>((set, get) => ({
@@ -153,4 +154,5 @@ export const useTodoStore = create<TodoState>((set, get) => ({
   setSearchQuery: (query: string) => set({ searchQuery: query }),
   refresh: async (userId: number) => await get().fetchTodos(userId),
   clearError: () => set({ error: null }),
+  clearTodos: () => set({ todos: [], filter: 'all', searchQuery: '', error: null }),
 }));

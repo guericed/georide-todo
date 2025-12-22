@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useTodos } from '../hooks/useTodos';
-import { validateTodoText } from '../utils/validation';
+import { useTodos } from '@/lib/hooks/useTodos';
+import { validateTodoText } from '@/lib/utils/validation';
 
 interface TodoFormScreenProps {
   mode?: 'add' | 'edit';

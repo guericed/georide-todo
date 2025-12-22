@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useTodos } from '../hooks/useTodos';
-import { useAuthStore } from '../stores/useAuthStore';
-import { SearchBar } from '../components/SearchBar';
-import { TodoFilters } from '../components/TodoFilters';
-import { TodoItem } from '../components/TodoItem';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { ErrorMessage } from '../components/ErrorMessage';
-import { EmptyState } from '../components/EmptyState';
+import { useTodos } from '@/lib/hooks/useTodos';
+import { useAuthStore } from '@/lib/stores/useAuthStore';
+import { SearchBar } from '@/lib/components/SearchBar';
+import { TodoFilters } from '@/lib/components/TodoFilters';
+import { TodoItem } from '@/lib/components/TodoItem';
+import { LoadingSpinner } from '@/lib/components/LoadingSpinner';
+import { ErrorMessage } from '@/lib/components/ErrorMessage';
+import { EmptyState } from '@/lib/components/EmptyState';
 
 /**
  * Main todo list screen component

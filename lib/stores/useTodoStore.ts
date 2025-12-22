@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import { Todo, createTempTodo, isTempTodo } from '../types/Todo';
-import { TodoFilter } from '../types/common';
-import { todoRepository } from '../api/TodoRepository';
-import { validateTodoText, sanitizeTodoText } from '../utils/validation';
+import { Todo, createTempTodo, isTempTodo, TodoFilter } from '@/lib/types/Todo';
+import { todoRepository } from '@/lib/api/TodoRepository';
+import { validateTodoText, sanitizeTodoText } from '@/lib/utils/validation';
 
 interface TodoState {
   todos: Todo[];

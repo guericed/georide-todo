@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Todo, isTempTodo } from '../types/Todo';
+import { Todo, isTempTodo } from '@/lib/types/Todo';
 
 interface TodoItemProps {
   todo: Todo;

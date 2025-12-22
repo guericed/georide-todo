@@ -1,4 +1,4 @@
-import { TodoFormScreen } from '../../lib/screens/TodoFormScreen';
+import { TodoFormScreen } from '@/lib/screens/TodoFormScreen';
 
 /**
  * Edit todo route

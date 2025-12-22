@@ -11,21 +11,9 @@ export interface Todo {
 }
 
 /**
- * Factory function to create a new Todo
+ * Filter types for todo list
  */
-export function createTodo(
-  id: number,
-  text: string,
-  isCompleted: boolean,
-  userId: number
-): Todo {
-  return {
-    id,
-    text,
-    isCompleted,
-    userId,
-  };
-}
+export type TodoFilter = 'all' | 'active' | 'completed';
 
 /**
  * Creates a temporary todo for optimistic updates

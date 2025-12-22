@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { TodoFilter } from '../types/common';
+import { TodoFilter } from "@/lib/types/Todo";
 
 interface TodoFiltersProps {
   currentFilter: TodoFilter;

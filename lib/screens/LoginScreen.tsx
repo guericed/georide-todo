@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuthStore } from '../stores/useAuthStore';
-import { MOCK_USERS } from '../utils/config';
+import { useAuthStore } from '@/lib/stores/useAuthStore';
+import { MOCK_USERS } from '@/lib/utils/config';
 
 /**
  * Login screen component

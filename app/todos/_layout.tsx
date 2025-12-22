@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { AuthGuard } from '../../lib/components/AuthGuard';
+import { AuthGuard } from '@/lib/components/AuthGuard';
 
 export default function TodosLayout() {
   return (

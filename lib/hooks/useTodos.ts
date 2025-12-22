@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useTodoStore } from '../stores/useTodoStore';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useTodoStore } from '@/lib/stores/useTodoStore';
+import { useAuthStore } from '@/lib/stores/useAuthStore';
 import { useDebounce } from './useDebounce';
 
 export function useTodos() {

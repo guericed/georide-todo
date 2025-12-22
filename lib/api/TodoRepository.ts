@@ -1,5 +1,5 @@
-import { API_BASE_URL } from '../utils/config';
-import { TodoDTO, GetTodosResponse, mapDTOToEntity, mapDTOsToEntities } from '../types/TodoDTO';
+import { API_BASE_URL } from '@/lib/utils/config';
+import { TodoDTO, GetTodosResponse, mapDTOToEntity, mapDTOsToEntities } from '@/lib/types/TodoDTO';
 
 class TodoRepository {
   async getTodos(userId: number) {

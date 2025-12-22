@@ -1,4 +1,4 @@
-import { TodoListScreen } from '../../lib/screens/TodoListScreen';
+import { TodoListScreen } from '@/lib/screens/TodoListScreen';
 
 /**
  * Todo list route

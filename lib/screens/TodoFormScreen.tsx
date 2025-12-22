@@ -33,7 +33,6 @@ export function TodoFormScreen({ mode = 'add' }: TodoFormScreenProps) {
   }, [existingTodo]);
 
   const handleSave = async () => {
-    // Validate input
     const validation = validateTodoText(text);
     if (!validation.isValid) {
       setError(validation.error!);
@@ -69,12 +68,10 @@ export function TodoFormScreen({ mode = 'add' }: TodoFormScreenProps) {
       style={styles.container}
     >
       <View style={styles.content}>
-        {/* Header */}
         <Text style={styles.header}>
           {mode === 'edit' ? 'Edit Todo' : 'New Todo'}
         </Text>
 
-        {/* Input */}
         <View style={styles.inputSection}>
           <Text style={styles.label}>Todo Text</Text>
           <TextInput
@@ -97,12 +94,10 @@ export function TodoFormScreen({ mode = 'add' }: TodoFormScreenProps) {
           )}
         </View>
 
-        {/* Character count */}
         <Text style={styles.charCount}>
           {text.length} / 500 characters
         </Text>
 
-        {/* Actions */}
         <View style={styles.actions}>
           <TouchableOpacity
             onPress={handleCancel}

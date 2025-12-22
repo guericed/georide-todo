@@ -38,24 +38,20 @@ export function TodoListScreen() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Fetch todos on mount
   useEffect(() => {
     fetchTodos();
   }, []);
 
-  // Handle pull-to-refresh
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await refresh();
     setIsRefreshing(false);
   };
 
-  // Handle todo toggle
   const handleToggle = async (id: number) => {
     await toggleTodo(id);
   };
 
-  // Handle todo delete
   const handleDelete = (id: number) => {
     Alert.alert(
       'Delete Todo',
@@ -71,17 +67,14 @@ export function TodoListScreen() {
     );
   };
 
-  // Handle todo edit
   const handleEdit = (id: number) => {
     router.push(`/todos/${id}`);
   };
 
-  // Handle add new todo
   const handleAddTodo = () => {
     router.push('/modal');
   };
 
-  // Handle logout
   const handleLogout = () => {
     Alert.alert(
       'Logout',
@@ -100,17 +93,14 @@ export function TodoListScreen() {
     );
   };
 
-  // Loading state
   if (isLoading && allTodos.length === 0) {
     return <LoadingSpinner message="Loading todos..." />;
   }
 
-  // Error state
   if (error && allTodos.length === 0) {
     return <ErrorMessage message={error} onRetry={fetchTodos} />;
   }
 
-  // Determine empty state message
   const getEmptyStateProps = () => {
     if (searchQuery.trim()) {
       return {
@@ -142,7 +132,6 @@ export function TodoListScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <View>
@@ -162,13 +151,11 @@ export function TodoListScreen() {
         </View>
       </View>
 
-      {/* Search Bar */}
       <SearchBar
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
-      {/* Filters */}
       <TodoFilters
         currentFilter={filter}
         onFilterChange={setFilter}
@@ -177,7 +164,6 @@ export function TodoListScreen() {
         completedCount={completedTodosCount}
       />
 
-      {/* Error banner */}
       {error && (
         <View style={styles.errorBanner}>
           <Text style={styles.errorBannerText}>{error}</Text>
@@ -187,7 +173,6 @@ export function TodoListScreen() {
         </View>
       )}
 
-      {/* Todo List */}
       <FlatList
         data={todos}
         keyExtractor={(item) => item.id.toString()}
@@ -212,7 +197,6 @@ export function TodoListScreen() {
         }
       />
 
-      {/* Floating Add Button */}
       <TouchableOpacity
         onPress={handleAddTodo}
         style={styles.fab}

@@ -25,7 +25,6 @@ export const TodoItem = memo(function TodoItem({
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        {/* Checkbox */}
         <TouchableOpacity
           onPress={() => onToggle(todo.id)}
           style={[
@@ -42,7 +41,6 @@ export const TodoItem = memo(function TodoItem({
           )}
         </TouchableOpacity>
 
-        {/* Todo text */}
         <View style={styles.textContainer}>
           <Text
             style={[
@@ -58,7 +56,6 @@ export const TodoItem = memo(function TodoItem({
           )}
         </View>
 
-        {/* Action buttons */}
         {!isTemp && (
           <View style={styles.actions}>
             <TouchableOpacity

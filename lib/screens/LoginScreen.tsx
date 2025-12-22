@@ -18,7 +18,6 @@ export function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>
           Welcome to Todo App
@@ -28,7 +27,6 @@ export function LoginScreen() {
         </Text>
       </View>
 
-      {/* User List */}
       <View style={styles.content}>
         <Text style={styles.sectionTitle}>
           Choose Your Profile
@@ -58,7 +56,6 @@ export function LoginScreen() {
         />
       </View>
 
-      {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
           This is a demo app using DummyJSON API

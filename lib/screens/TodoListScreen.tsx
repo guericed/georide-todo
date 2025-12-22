@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, RefreshControl, Alert, StyleSheet } from 'react-native';
+import { View, FlatList, RefreshControl, Alert, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTodos } from '@/lib/hooks/useTodos';
 import { useAuthStore } from '@/lib/stores/useAuthStore';
@@ -9,6 +9,9 @@ import { TodoItem } from '@/lib/components/TodoItem';
 import { LoadingSpinner } from '@/lib/components/LoadingSpinner';
 import { ErrorMessage } from '@/lib/components/ErrorMessage';
 import { EmptyState } from '@/lib/components/EmptyState';
+import { AppHeader } from '@/lib/components/ui/AppHeader';
+import { ErrorBanner } from '@/lib/components/ui/ErrorBanner';
+import { FAB } from '@/lib/components/ui/FAB';
 
 /**
  * Main todo list screen component
@@ -128,24 +131,12 @@ export function TodoListScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <View>
-            <Text style={styles.headerTitle}>My Todos</Text>
-            <Text style={styles.headerSubtitle}>
-              {user?.name} ({user?.avatar})
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={handleLogout}
-            style={styles.logoutButton}
-            accessibilityRole="button"
-            accessibilityLabel="Logout"
-          >
-            <Text style={styles.logoutButtonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <AppHeader
+        title="My Todos"
+        userName={user?.name || ''}
+        userAvatar={user?.avatar || ''}
+        onLogout={handleLogout}
+      />
 
       <SearchBar
         value={searchQuery}
@@ -160,14 +151,7 @@ export function TodoListScreen() {
         completedCount={completedTodosCount}
       />
 
-      {error && (
-        <View style={styles.errorBanner}>
-          <Text style={styles.errorBannerText}>{error}</Text>
-          <TouchableOpacity onPress={clearError}>
-            <Text style={styles.errorBannerDismiss}>Dismiss</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      {error && <ErrorBanner message={error} onDismiss={clearError} />}
 
       <FlatList
         data={todos}
@@ -193,14 +177,10 @@ export function TodoListScreen() {
         }
       />
 
-      <TouchableOpacity
+      <FAB
         onPress={handleAddTodo}
-        style={styles.fab}
-        accessibilityRole="button"
         accessibilityLabel="Add new todo"
-      >
-        <Text style={styles.fabIcon}>+</Text>
-      </TouchableOpacity>
+      />
     </View>
   );
 }
@@ -210,84 +190,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9FAFB',
   },
-  header: {
-    backgroundColor: '#3B82F6',
-    paddingTop: 48,
-    paddingBottom: 16,
-    paddingHorizontal: 24,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  headerSubtitle: {
-    color: '#DBEAFE',
-    fontSize: 14,
-  },
-  logoutButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#2563EB',
-    borderRadius: 8,
-  },
-  logoutButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '500',
-    fontSize: 14,
-  },
-  errorBanner: {
-    backgroundColor: '#FEF2F2',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#FECACA',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  errorBannerText: {
-    color: '#B91C1C',
-    flex: 1,
-    fontSize: 14,
-  },
-  errorBannerDismiss: {
-    color: '#EF4444',
-    fontWeight: '500',
-    marginLeft: 12,
-    fontSize: 14,
-  },
   listContent: {
     paddingBottom: 80,
   },
   listEmptyContent: {
     flex: 1,
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    width: 56,
-    height: 56,
-    backgroundColor: '#3B82F6',
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  fabIcon: {
-    color: '#FFFFFF',
-    fontSize: 32,
-    fontWeight: '300',
   },
 });

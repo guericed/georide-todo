@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert, StyleSheet } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, Alert, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTodos } from '@/lib/hooks/useTodos';
 import { validateTodoText } from '@/lib/utils/validation';
+import { Input } from '@/lib/components/ui/Input';
+import { Button } from '@/lib/components/ui/Button';
+import { CharacterCount } from '@/lib/components/ui/CharacterCount';
 
 interface TodoFormScreenProps {
   mode?: 'add' | 'edit';
@@ -72,56 +75,42 @@ export function TodoFormScreen({ mode = 'add' }: TodoFormScreenProps) {
           {mode === 'edit' ? 'Edit Todo' : 'New Todo'}
         </Text>
 
-        <View style={styles.inputSection}>
-          <Text style={styles.label}>Todo Text</Text>
-          <TextInput
-            value={text}
-            onChangeText={(value) => {
-              setText(value);
-              setError(null);
-            }}
-            placeholder="Enter todo text..."
-            placeholderTextColor="#9CA3AF"
-            multiline
-            numberOfLines={4}
-            style={[styles.input, { textAlignVertical: 'top' }]}
-            accessibilityLabel="Todo text input"
-            accessibilityHint="Enter the text for your todo"
-            autoFocus
-          />
-          {error && (
-            <Text style={styles.errorText}>{error}</Text>
-          )}
-        </View>
+        <Input
+          label="Todo Text"
+          value={text}
+          onChangeText={(value) => {
+            setText(value);
+            setError(null);
+          }}
+          placeholder="Enter todo text..."
+          multiline
+          numberOfLines={4}
+          error={error}
+          accessibilityLabel="Todo text input"
+          accessibilityHint="Enter the text for your todo"
+          autoFocus
+        />
 
-        <Text style={styles.charCount}>
-          {text.length} / 500 characters
-        </Text>
+        <CharacterCount current={text.length} max={500} />
 
         <View style={styles.actions}>
-          <TouchableOpacity
+          <Button
+            variant="secondary"
             onPress={handleCancel}
-            style={styles.cancelButton}
-            accessibilityRole="button"
             accessibilityLabel="Cancel"
             disabled={isSaving}
           >
-            <Text style={styles.cancelButtonText}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
+            Cancel
+          </Button>
 
-          <TouchableOpacity
+          <Button
+            variant="primary"
             onPress={handleSave}
-            style={[styles.saveButton, isSaving && styles.saveButtonDisabled]}
-            accessibilityRole="button"
             accessibilityLabel={mode === 'edit' ? 'Save changes' : 'Add todo'}
             disabled={isSaving}
           >
-            <Text style={styles.saveButtonText}>
-              {isSaving ? 'Saving...' : mode === 'edit' ? 'Save' : 'Add Todo'}
-            </Text>
-          </TouchableOpacity>
+            {isSaving ? 'Saving...' : mode === 'edit' ? 'Save' : 'Add Todo'}
+          </Button>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -143,64 +132,8 @@ const styles = StyleSheet.create({
     color: '#111827',
     marginBottom: 24,
   },
-  inputSection: {
-    marginBottom: 16,
-  },
-  label: {
-    color: '#374151',
-    fontWeight: '500',
-    marginBottom: 8,
-    fontSize: 14,
-  },
-  input: {
-    backgroundColor: '#F9FAFB',
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    padding: 16,
-    color: '#111827',
-    fontSize: 16,
-    minHeight: 100,
-  },
-  errorText: {
-    color: '#EF4444',
-    fontSize: 14,
-    marginTop: 8,
-  },
-  charCount: {
-    color: '#6B7280',
-    fontSize: 14,
-    marginBottom: 24,
-  },
   actions: {
     flexDirection: 'row',
     gap: 12,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: '#E5E7EB',
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: '#374151',
-    fontWeight: '600',
-    fontSize: 16,
-  },
-  saveButton: {
-    flex: 1,
-    backgroundColor: '#3B82F6',
-    paddingVertical: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  saveButtonDisabled: {
-    backgroundColor: '#93C5FD',
-  },
-  saveButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-    fontSize: 16,
   },
 });

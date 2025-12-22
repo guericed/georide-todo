@@ -282,6 +282,10 @@ Si ce projet devait évoluer vers la production, voici les améliorations priori
 - **Virtualization** - Optimisation de la liste de todos.
 - **Pagination** - La liste des todos de l'utilisateur devrait être chargée en utilisant une pagination et de ce fait le filtrage devrait se faire côté API.
 
+### Architecture & Séparation des Préoccupations
+- **Service Layer** - Extraire la logique métier (optimistic updates, orchestration) des stores Zustand vers une couche de services dédiée. Actuellement, `useTodoStore` gère à la fois l'état et l'orchestration des appels API. Pour un projet de plus grande envergure, séparer cette logique dans un `TodoService` permettrait une meilleure testabilité et réutilisabilité. 
+**Trade-off :** Pour l'échelle actuelle du projet, la séparation actuelle (Repository → Store → Hook) est appropriée et évite la sur-ingénierie.
+
 ### UX/UI
 - **Bibliothèque d'icônes** - React Native Vector Icons ou Expo Icons
 - **Web** - Actuellement l'application est faite pour être utilisée sur mobile, si l'on veut l'utiliser sur le web ou tablette, il serait préférable d'améliorer les vues pour qu'elles soient agréables à utiliser sur ces plateformes.

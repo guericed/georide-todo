@@ -2,13 +2,17 @@
 
 Application de gestion de tâches en React Native utilisant Expo et TypeScript.
 
+## 🎬 Démo
+
+https://github.com/user-attachments/assets/3dd74f7e-d77a-45d3-8511-840dada42bc2
+
 ## 🚀 Installation et Lancement
 
 ```bash
 # Installation des dépendances
 npm install
 
-# Lancer l'application
+# Lancer l'application (par défaut avec expo go)
 npm start
 
 # Lancer sur une plateforme spécifique
@@ -281,6 +285,7 @@ Si ce projet devait évoluer vers la production, voici les améliorations priori
 - **React Query** - Remplacer Zustand pour le server state (cache, refetch auto)
 - **Virtualization** - Optimisation de la liste de todos.
 - **Pagination** - La liste des todos de l'utilisateur devrait être chargée en utilisant une pagination et de ce fait le filtrage devrait se faire côté API.
+- **Complexité** - Actuellement on a beaucoup de traitement en O(n), j'ajouterais une Map pour accèder aux todo en O(1), même si la complexité d'espace augmenterais je pense que cela pourrait valoir le coup;
 
 ### Architecture & Séparation des Préoccupations
 - **Service Layer** - Extraire la logique métier (optimistic updates, orchestration) des stores Zustand vers une couche de services dédiée. Actuellement, `useTodoStore` gère à la fois l'état et l'orchestration des appels API. Pour un projet de plus grande envergure, séparer cette logique dans un `TodoService` permettrait une meilleure testabilité et réutilisabilité. 

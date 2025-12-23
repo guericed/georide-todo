@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Todo, isTempTodo } from '@/lib/types/Todo';
+import { Todo } from '@/lib/types/Todo';
 import { colors } from '@/lib/theme/colors';
 
 interface TodoItemProps {
@@ -21,8 +21,6 @@ export const TodoItem = memo(function TodoItem({
   onDelete,
   onEdit,
 }: TodoItemProps) {
-  const isTemp = isTempTodo(todo);
-
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -35,7 +33,6 @@ export const TodoItem = memo(function TodoItem({
           accessibilityRole="checkbox"
           accessibilityState={{ checked: todo.isCompleted }}
           accessibilityLabel={`Mark todo as ${todo.isCompleted ? 'incomplete' : 'complete'}`}
-          disabled={isTemp}
         >
           {todo.isCompleted && (
             <Text style={styles.checkmark}>✓</Text>
@@ -47,37 +44,31 @@ export const TodoItem = memo(function TodoItem({
             style={[
               styles.todoText,
               todo.isCompleted && styles.todoTextCompleted,
-              isTemp && styles.todoTextTemp,
             ]}
           >
             {todo.text}
           </Text>
-          {isTemp && (
-            <Text style={styles.savingText}>Saving...</Text>
-          )}
         </View>
 
-        {!isTemp && (
-          <View style={styles.actions}>
-            <TouchableOpacity
-              onPress={() => onEdit(todo.id)}
-              style={styles.actionButton}
-              accessibilityRole="button"
-              accessibilityLabel="Edit todo"
-            >
-              <Text style={styles.editIcon}>✏️</Text>
-            </TouchableOpacity>
+        <View style={styles.actions}>
+          <TouchableOpacity
+            onPress={() => onEdit(todo.id)}
+            style={styles.actionButton}
+            accessibilityRole="button"
+            accessibilityLabel="Edit todo"
+          >
+            <Text style={styles.editIcon}>✏️</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => onDelete(todo.id)}
-              style={styles.actionButton}
-              accessibilityRole="button"
-              accessibilityLabel="Delete todo"
-            >
-              <Text style={styles.deleteIcon}>🗑️</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+          <TouchableOpacity
+            onPress={() => onDelete(todo.id)}
+            style={styles.actionButton}
+            accessibilityRole="button"
+            accessibilityLabel="Delete todo"
+          >
+            <Text style={styles.deleteIcon}>🗑️</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -126,14 +117,6 @@ const styles = StyleSheet.create({
   todoTextCompleted: {
     textDecorationLine: 'line-through',
     color: colors.neutral.gray400,
-  },
-  todoTextTemp: {
-    opacity: 0.6,
-  },
-  savingText: {
-    fontSize: 12,
-    color: colors.neutral.gray400,
-    marginTop: 4,
   },
   actions: {
     flexDirection: 'row',

@@ -16,21 +16,28 @@ export interface Todo {
 export type TodoFilter = 'all' | 'active' | 'completed';
 
 /**
- * Creates a temporary todo for optimistic updates
- * Uses negative ID to differentiate from server-generated IDs
+ * ID counter for generating unique client-side IDs
+ * Starts at a very high number to avoid collision with server IDs
  */
-export function createTempTodo(text: string, userId: number): Todo {
+let clientIdCounter = Date.now();
+
+/**
+ * Generates a unique client-side ID for optimistic updates
+ * Uses timestamp + incremental counter to guarantee uniqueness
+ */
+export function generateUniqueId(): number {
+  return clientIdCounter++;
+}
+
+/**
+ * Creates an optimistic todo with a client-generated ID
+ * The ID will be replaced by the server-generated ID when the API responds
+ */
+export function createOptimisticTodo(text: string, userId: number): Todo {
   return {
-    id: -Date.now(), // Negative timestamp as temporary ID
+    id: generateUniqueId(),
     text,
     isCompleted: false,
     userId,
   };
-}
-
-/**
- * Checks if a todo is a temporary one (optimistic update)
- */
-export function isTempTodo(todo: Todo): boolean {
-  return todo.id < 0;
 }

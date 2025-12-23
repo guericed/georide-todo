@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Todo, createTempTodo, isTempTodo, TodoFilter } from '@/lib/types/Todo';
+import { Todo, createOptimisticTodo, TodoFilter } from '@/lib/types/Todo';
 import { todoRepository } from '@/lib/api/TodoRepository';
 import { validateTodoText, sanitizeTodoText } from '@/lib/utils/validation';
 
@@ -49,23 +49,22 @@ export const useTodoStore = create<TodoState>((set, get) => ({
     }
 
     const sanitizedText = sanitizeTodoText(text);
-    const tempTodo = createTempTodo(sanitizedText, userId);
+    const optimisticTodo = createOptimisticTodo(sanitizedText, userId);
 
     set((state) => ({
-      todos: [tempTodo, ...state.todos],
+      todos: [optimisticTodo, ...state.todos],
       error: null,
     }));
 
     try {
-      const newTodo = await todoRepository.createTodo(sanitizedText, userId);
-      set((state) => ({
-        todos: state.todos.map((t) => (t.id === tempTodo.id ? newTodo : t)),
-      }));
-      return newTodo;
+      // Make API call to persist (DummyJSON returns inconsistent IDs, so we keep our optimistic one)
+      await todoRepository.createTodo(sanitizedText, userId);
+      return optimisticTodo;
     } catch (error) {
+      // On error, remove the optimistic todo and show error
       const message = error instanceof Error ? error.message : 'Failed to add todo';
       set((state) => ({
-        todos: state.todos.filter((t) => t.id !== tempTodo.id),
+        todos: state.todos.filter((t) => t.id !== optimisticTodo.id),
         error: message,
       }));
       return null;
@@ -90,8 +89,8 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       const updatedTodo = await todoRepository.updateTodo(id, sanitizedText);
       return updatedTodo;
     } catch (error) {
-      // WARNING !!!
-      // We silently catch the error since the API is actually not handling update on new todo.
+      // WARNING: We silently catch the error since the API
+      // is actually not handling update on new todo.
       //const message = error instanceof Error ? error.message : 'Failed to update todo';
       //set({ todos: originalTodos, error: message });
       return null;
@@ -99,22 +98,16 @@ export const useTodoStore = create<TodoState>((set, get) => ({
   },
 
   deleteTodo: async (id: number) => {
-    const todo = get().todos.find((t) => t.id === id);
-
     set((state) => ({
       todos: state.todos.filter((t) => t.id !== id),
       error: null,
     }));
 
-    if (todo && isTempTodo(todo)) {
-      return;
-    }
-
     try {
       await todoRepository.deleteTodo(id);
     } catch (error) {
-      // WARNING !!!
-      // We silently catch the error since the API is actually not handling delete on new todo.
+      // WARNING: We silently catch the error since DummyJSON API
+      // doesn't properly handle delete for client-generated IDs
     }
   },
 
@@ -131,16 +124,12 @@ export const useTodoStore = create<TodoState>((set, get) => ({
       error: null,
     }));
 
-    if (isTempTodo(todo)) {
-      return todo;
-    }
-
     try {
-      const updatedTodo = await todoRepository.toggleTodo(id, newCompleted);
-      return updatedTodo;
+      await todoRepository.toggleTodo(id, newCompleted);
+      return { ...todo, isCompleted: newCompleted };
     } catch (error) {
-      // WARNING !!!
-      // We silently catch the error since the API is actually not handling toggle on new todo.
+      // WARNING: We silently catch the error since DummyJSON API
+      // doesn't properly handle toggle for client-generated IDs
       //const message = error instanceof Error ? error.message : 'Failed to toggle todo';
       //set({ todos: originalTodos, error: message });
       return null;

@@ -48,6 +48,35 @@ npx tsc --noEmit
 - **DummyJSON API** - API de test qui simule les actions d'ajout/modification (https://dummyjson.com)
 - **React Native StyleSheet** - Styling manuel
 
+## 🎯 Approche de Développement
+
+### Stratégie de Développement
+
+Ma stratégie pour ce test technique a été la suivante :
+
+**1. MVP d'abord, refactoring ensuite**
+
+Arriver rapidement à une version qui fonctionne en m'aidant de **Claude Code** en lui donnant les directives les plus claires possibles pour qu'il m'aide à construire une base solide.
+
+> 💡 **Philosophie :** Pour moi le plus important est d'avoir quelque chose à livrer même si le code a un peu de dette technique → **mieux vaut un code imparfait en prod qu'un code parfait qui n'a jamais été livré**.
+
+**2. Amélioration itérative**
+
+Une fois cette première version obtenue, je me suis penché plus en détail sur l'implémentation et comment l'améliorer pour avoir un code le plus maintenable et évolutif possible. De plus, je sais combien il est important de poser de bonnes bases pour pouvoir par la suite avancer encore plus vite, notamment en utilisant l'IA générative qui donnera un bien meilleur résultat en partant d'une base saine.
+
+**3. Refactoring ciblé**
+
+J'ai procédé à plusieurs refactorings pour extraire des composants ou de la logique afin d'avoir une séparation claire des concepts. Mon but étant d'arriver à un résultat satisfaisant **sans tomber dans la sur-ingénierie**.
+
+### Choix Assumé
+
+**Pas de tests dans ce projet**
+
+J'ai choisi de ne pas ajouter de tests sur ce projet. En effet, le setup des tests sur les projets mobiles peut prendre pas mal de temps en raison des modifications à faire sur la config et notamment sur celle de Babel. J'ai donc préféré passer du temps à faire du refactoring plutôt que de la configuration.
+
+> ⚠️ **Important :** C'est un parti pris pour ce test technique. **Dans un projet de production, j'aurais évidemment mis des tests en place** (Jest, React Native Testing Library, Detox pour l'E2E).
+
+
 ### Structure du Projet
 
 ```

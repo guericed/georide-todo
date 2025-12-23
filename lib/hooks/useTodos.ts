@@ -24,34 +24,35 @@ export function useTodos() {
   const { user } = useAuthStore();
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
-  const filteredTodos = useMemo(() => {
-    let result = todos;
-
-    if (filter === 'active') {
-      result = result.filter((todo) => !todo.isCompleted);
-    } else if (filter === 'completed') {
-      result = result.filter((todo) => todo.isCompleted);
-    }
-
+  const { allFiltered, activeFiltered, completedFiltered } = useMemo(() => {
+    let searchFiltered = todos;
     if (debouncedSearchQuery.trim()) {
       const query = debouncedSearchQuery.toLowerCase();
-      result = result.filter((todo) =>
+      searchFiltered = todos.filter((todo) =>
         todo.text.toLowerCase().includes(query)
       );
     }
 
-    return result;
-  }, [todos, filter, debouncedSearchQuery]);
+    return {
+      allFiltered: searchFiltered,
+      activeFiltered: searchFiltered.filter((todo) => !todo.isCompleted),
+      completedFiltered: searchFiltered.filter((todo) => todo.isCompleted),
+    };
+  }, [todos, debouncedSearchQuery]);
 
-  const activeTodosCount = useMemo(
-    () => todos.filter((todo) => !todo.isCompleted).length,
-    [todos]
-  );
+  const filteredTodos = useMemo(() => {
+    switch (filter) {
+      case 'active':
+        return activeFiltered;
+      case 'completed':
+        return completedFiltered;
+      default:
+        return allFiltered;
+    }
+  }, [filter, allFiltered, activeFiltered, completedFiltered]);
 
-  const completedTodosCount = useMemo(
-    () => todos.filter((todo) => todo.isCompleted).length,
-    [todos]
-  );
+  const activeTodosCount = activeFiltered.length;
+  const completedTodosCount = completedFiltered.length;
 
   const addTodoForCurrentUser = async (text: string) => {
     if (!user) throw new Error('No user logged in');
@@ -73,7 +74,7 @@ export function useTodos() {
     allTodos: todos,
     activeTodosCount,
     completedTodosCount,
-    totalTodosCount: todos.length,
+    totalTodosCount: allFiltered.length,
     filter,
     searchQuery,
     isLoading,
